@@ -11,7 +11,7 @@ import SwiftUI
 struct LaunchScreenApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LaunchScreenView()
         }
     }
 }
