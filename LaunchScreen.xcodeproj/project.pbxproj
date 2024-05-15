@@ -14,6 +14,7 @@
 		787147E92BF35A46003695A1 /* Icon_Animation.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 787147E82BF35A46003695A1 /* Icon_Animation.mp4 */; };
 		787147ED2BF35AEE003695A1 /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787147EC2BF35AEE003695A1 /* LaunchScreenView.swift */; };
 		787147EF2BF35B55003695A1 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787147EE2BF35B55003695A1 /* OnboardingView.swift */; };
+		787147F12BF37F1C003695A1 /* Smile_Loop.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 787147F02BF37F1C003695A1 /* Smile_Loop.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		787147E82BF35A46003695A1 /* Icon_Animation.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Icon_Animation.mp4; sourceTree = "<group>"; };
 		787147EC2BF35AEE003695A1 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
 		787147EE2BF35B55003695A1 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		787147F02BF37F1C003695A1 /* Smile_Loop.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Smile_Loop.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				787147E82BF35A46003695A1 /* Icon_Animation.mp4 */,
+				787147F02BF37F1C003695A1 /* Smile_Loop.mp4 */,
 				787147E02BF35468003695A1 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -134,6 +137,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				787147F12BF37F1C003695A1 /* Smile_Loop.mp4 in Resources */,
 				787147E12BF35468003695A1 /* Preview Assets.xcassets in Resources */,
 				787147E92BF35A46003695A1 /* Icon_Animation.mp4 in Resources */,
 				787147DE2BF35468003695A1 /* Assets.xcassets in Resources */,

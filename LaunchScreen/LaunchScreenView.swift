@@ -10,19 +10,12 @@ import AVKit
 
 struct PlayerView: UIViewControllerRepresentable {
     @Binding var isPlaying: Bool
-    @Binding var shouldReplay: Bool
     
     func updateUIViewController(_ playerController: AVPlayerViewController, context: Context) {
         if isPlaying {
             playerController.player?.play()
         } else {
             playerController.player?.pause()
-        }
-        
-        if shouldReplay {
-            playerController.player?.seek(to: CMTime.zero)
-            playerController.player?.play()
-            shouldReplay = false
         }
     }
     
@@ -33,8 +26,21 @@ struct PlayerView: UIViewControllerRepresentable {
         playerViewController.showsPlaybackControls = false
         playerViewController.videoGravity = .resizeAspectFill
         
+        player.actionAtItemEnd = .none
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: .main) { _ in
-            isPlaying = false
+            player.seek(to: CMTime.zero)
+            player.play()
+        }
+        
+        // ハプティックフィードバックを追加
+        let hapticTimes = [0.1, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.25, 3.5, 3.75, 4.0, 4.25, 4.5, 4.75, 5.0, 5.25, 5.5, 5.75, 6.0, 6.25, 6.5, 6.75, 7.0, 7.25, 7.5] // フィードバックを発生させる時間（秒）
+        player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 600), queue: .main) { time in
+            for hapticTime in hapticTimes {
+                if time.seconds >= hapticTime && time.seconds < hapticTime + 0.1 {
+                    let generator = UIImpactFeedbackGenerator(style: .heavy)
+                    generator.impactOccurred()
+                }
+            }
         }
         
         return playerViewController
@@ -44,19 +50,13 @@ struct PlayerView: UIViewControllerRepresentable {
 struct LaunchScreenView: View {
     @State private var showOnboarding = false
     @State private var isPlaying = true
-    @State private var shouldReplay = false
     
     var body: some View {
         ZStack {
-            PlayerView(isPlaying: $isPlaying, shouldReplay: $shouldReplay)
+            PlayerView(isPlaying: $isPlaying)
                 .edgesIgnoringSafeArea(.all)
                 .onTapGesture {
-                    if isPlaying {
-                        isPlaying = false
-                    } else {
-                        shouldReplay = true
-                        isPlaying = true
-                    }
+                    isPlaying.toggle()
                 }
             
             VStack {
