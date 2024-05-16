@@ -95,19 +95,48 @@ struct LaunchScreenView: View {
                 }
             
             VStack {
+                Image("BuyByFriends_Title")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 304)
+                    .padding(.top, 120)
+
+//                Text("BuyByFriends")
+//                    .font(.largeTitle)
+//                    .fontWeight(.bold)
+//                    .foregroundColor(.black)
+//                    .padding(.top, 120)
+                
                 Spacer()
                 
                 Button(action: {
                     showOnboarding = true
                     isPlaying = false
                 }) {
-                    Text("次へ")
+                    Text("Get started")
+                        .font(.title)
+                        .fontWeight(.bold)
                         .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.yellow)
+                        .foregroundColor(.black)
+                        .cornerRadius(50)
                 }
-                .padding(.bottom, 50)
+                .padding(.horizontal, 50)
+                .padding(.bottom, 16)
+                
+                Text("本アプリでは「Get started」を押した時点で、利用規約とプライバシーポリシーに同意いただいたことになります。")
+                    .font(.footnote)
+                    .foregroundColor(.black)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+                    
+                
+                Text("ログイン")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .padding()
+                    .frame(maxWidth: .infinity)
             }
         }
         .fullScreenCover(isPresented: $showOnboarding, onDismiss: {

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct OnboardingView: View {
+    
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -25,7 +26,12 @@ struct OnboardingView: View {
                     .cornerRadius(10)
             }
         }
+        .transition(.slide)
     }
+}
+
+#Preview {
+    OnboardingView()
 }
 
 #Preview {
