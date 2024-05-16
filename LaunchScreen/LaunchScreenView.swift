@@ -32,12 +32,47 @@ struct PlayerView: UIViewControllerRepresentable {
             player.play()
         }
         
-        // ハプティックフィードバックを追加
-        let hapticTimes = [0.1, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.25, 3.5, 3.75, 4.0, 4.25, 4.5, 4.75, 5.0, 5.25, 5.5, 5.75, 6.0, 6.25, 6.5, 6.75, 7.0, 7.25, 7.5] // フィードバックを発生させる時間（秒）
+        // ハプティックフィードバックを生成する時間を指数関数で計算（時間軸を逆にする）
+        let baseValue: Double = 1.1
+        let maxTime: Double = 7.5
+        let intervalCount: Int = 80
+        
+        var hapticTimes: [Double] = []
+        
+        for i in 0..<intervalCount {
+            let time = maxTime - pow(baseValue, Double(i)) + 1
+            if time >= 0 {
+                hapticTimes.append(time)
+            } else {
+                break
+            }
+        }
+        
+        if let firstTime = hapticTimes.first, firstTime > 0 {
+            hapticTimes[0] = 0
+        }
+        
+        let lightThreshold = 0.1
+        let mediumThreshold = 0.3
+        let heavyThreshold = 0.45
+        
         player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 600), queue: .main) { time in
-            for hapticTime in hapticTimes {
+            for (index, hapticTime) in hapticTimes.enumerated() {
                 if time.seconds >= hapticTime && time.seconds < hapticTime + 0.1 {
-                    let generator = UIImpactFeedbackGenerator(style: .heavy)
+                    var generator: UIImpactFeedbackGenerator
+                    if index < Int(Double(hapticTimes.count) * lightThreshold) {
+                        generator = UIImpactFeedbackGenerator(style: .medium)
+                        generator.impactOccurred()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                            generator.impactOccurred()
+                        }
+                    } else if index < Int(Double(hapticTimes.count) * mediumThreshold) {
+                        generator = UIImpactFeedbackGenerator(style: .heavy)
+                    } else if index < Int(Double(hapticTimes.count) * heavyThreshold) {
+                        generator = UIImpactFeedbackGenerator(style: .medium)
+                    } else {
+                        generator = UIImpactFeedbackGenerator(style: .light)
+                    }
                     generator.impactOccurred()
                 }
             }
