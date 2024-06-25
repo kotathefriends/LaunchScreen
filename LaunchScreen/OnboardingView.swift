@@ -8,32 +8,34 @@
 import SwiftUI
 
 struct OnboardingView: View {
-    
-    @Environment(\.presentationMode) var presentationMode
+    @Binding var showOnboarding: Bool
     
     var body: some View {
-        VStack {
-            Text("オンボーディング画面")
-                .font(.title)
+        ZStack {
+            Rectangle()
+                .fill(Color.white)
+                .edgesIgnoringSafeArea(.all)
             
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }) {
-                Text("戻る")
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+            VStack {
+                Text("オンボーディング画面")
+                    .font(.title)
+                
+                Button(action: {
+                    withAnimation {
+                        showOnboarding = false
+                    }
+                }) {
+                    Text("戻る")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
             }
         }
-        .transition(.slide)
     }
 }
 
 #Preview {
-    OnboardingView()
-}
-
-#Preview {
-    OnboardingView()
+    OnboardingView(showOnboarding: .constant(true))
 }

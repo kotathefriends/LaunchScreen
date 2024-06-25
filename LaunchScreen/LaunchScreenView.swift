@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVKit
+import AVFoundation
 
 struct PlayerView: UIViewControllerRepresentable {
     @Binding var isPlaying: Bool
@@ -25,6 +26,13 @@ struct PlayerView: UIViewControllerRepresentable {
         playerViewController.player = player
         playerViewController.showsPlaybackControls = false
         playerViewController.videoGravity = .resizeAspectFill
+
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("Failed to set audio session category: \(error)")
+        }
         
         player.actionAtItemEnd = .none
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: .main) { _ in
@@ -100,18 +108,14 @@ struct LaunchScreenView: View {
                     .scaledToFit()
                     .frame(maxWidth: 304)
                     .padding(.top, 120)
-
-//                Text("BuyByFriends")
-//                    .font(.largeTitle)
-//                    .fontWeight(.bold)
-//                    .foregroundColor(.black)
-//                    .padding(.top, 120)
                 
                 Spacer()
                 
                 Button(action: {
-                    showOnboarding = true
-                    isPlaying = false
+                    withAnimation {
+                        showOnboarding = true
+                        isPlaying = false
+                    }
                 }) {
                     Text("Get started")
                         .font(.title)
@@ -130,7 +134,6 @@ struct LaunchScreenView: View {
                     .foregroundColor(.black)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
-                    
                 
                 Text("ログイン")
                     .font(.title)
@@ -138,14 +141,16 @@ struct LaunchScreenView: View {
                     .padding()
                     .frame(maxWidth: .infinity)
             }
-        }
-        .fullScreenCover(isPresented: $showOnboarding, onDismiss: {
-            isPlaying = true
-        }) {
-            OnboardingView()
+            
+            if showOnboarding {
+                OnboardingView(showOnboarding: $showOnboarding)
+                    .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .trailing)))
+                    .zIndex(1)
+            }
         }
     }
 }
+
 #Preview {
     LaunchScreenView()
 }
